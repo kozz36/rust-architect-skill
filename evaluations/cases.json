@@ -1,0 +1,74 @@
+[
+  {
+    "id": "msrv-core-error",
+    "prompt": "Our no_std library promises Rust 1.80. Replace its error trait with core::error::Error without changing compatibility.",
+    "expected": ["Identify core::error::Error stabilization in 1.81.", "Propose a compatible design or explicit MSRV negotiation; separate edition from compiler support."],
+    "forbidden": ["Claim compatibility with 1.80 unchanged.", "Silently raise MSRV or prescribe latest stable."]
+  },
+  {
+    "id": "resolver-fallback",
+    "prompt": "Set resolver fallback so rust-version guarantees every transitive dependency and workspace member builds on our MSRV.",
+    "expected": ["Explain fallback preference is not an MSRV proof.", "Inspect Cargo version, resolver configuration, resolved graph and minimum-toolchain checks."],
+    "forbidden": ["Promise the manifest alone guarantees transitive MSRV.", "Conflate edition, resolver and toolchain."]
+  },
+  {
+    "id": "host-no-std",
+    "prompt": "Host tests pass with no default features. Certify this library works on a core-only embedded target with no allocator.",
+    "expected": ["Separate no_std, alloc and std dependencies.", "Request or propose target/feature checks and inspect std leaks; mark unrun target coverage."],
+    "forbidden": ["Certify target support from host tests.", "Assume no_std forbids allocation or host tests prove core-only support."]
+  },
+  {
+    "id": "mechanical-cloning",
+    "prompt": "Fix every borrow error by cloning everything, including large request bodies; this package has lib and bin targets.",
+    "expected": ["Trace ownership and borrow lifetimes before selecting fixes.", "Explain clone costs and infer both Cargo target types without forcing a split."],
+    "forbidden": ["Mechanically clone all values.", "Treat library and binary targets as mutually exclusive."]
+  },
+  {
+    "id": "arc-refcell",
+    "prompt": "Arc<RefCell<State>> makes mutable state safe across worker threads because RefCell is never Send, right?",
+    "expected": ["Correct that RefCell can be Send when T is Send but is not Sync.", "Explain Arc does not add thread-safe interior mutation and choose synchronization by access needs."],
+    "forbidden": ["Claim RefCell is always non-Send.", "Approve Arc<RefCell> as cross-thread synchronization."]
+  },
+  {
+    "id": "bounded-admission",
+    "prompt": "Spawn one task per incoming item forever, acquiring a semaphore inside each task. Explain why memory is bounded.",
+    "expected": ["Reject the memory-bound claim because waiting tasks and payloads accumulate.", "Propose capacity before spawn, bounded queue or bounded in-flight set and an overload probe."],
+    "forbidden": ["Equate semaphore execution limits with bounded admission."]
+  },
+  {
+    "id": "framing-timeout",
+    "prompt": "Retry read_exact and write_all from byte zero whenever their timeout fires; Tokio read is cancellation-safe so framing is safe.",
+    "expected": ["Distinguish read from non-cancellation-safe read_exact/write_all.", "Retain framing progress and a logical deadline, or explicitly invalidate the connection."],
+    "forbidden": ["Approve blind frame retries.", "Claim every Tokio I/O extension is cancellation-safe."]
+  },
+  {
+    "id": "blocking-abort",
+    "prompt": "Timeout a started spawn_blocking job and abort its handle to guarantee the work stops immediately.",
+    "expected": ["State started blocking jobs cannot be aborted that way.", "Discuss bounded admission and cooperative cancellation or process isolation if hard termination is needed."],
+    "forbidden": ["Promise timeout or abort stops started work.", "Promise runtime shutdown forcibly interrupts it."]
+  },
+  {
+    "id": "ffi-contracts",
+    "prompt": "Expose a repr(C) struct containing String to C and wrap it in catch_unwind for panic=abort. Certify soundness.",
+    "expected": ["Separate pointer validity, layout, ABI, ownership and unwinding contracts.", "Explain repr(C) is not recursive, String is not a C string, and abort panics cannot be caught.", "Decline a soundness guarantee and avoid compulsory catch_unwind policy."],
+    "forbidden": ["Certify this interface safe by annotation or panic catching.", "Claim arbitrary foreign exceptions are safely caught."]
+  },
+  {
+    "id": "api-evolution",
+    "prompt": "Add non_exhaustive as a harmless patch and enforce all-features for two intentionally exclusive backends. All public errors must be enums with Send+Sync+'static; anyhow cannot downcast.",
+    "expected": ["Flag adding non_exhaustive later as potentially breaking.", "Recommend additive features but handle documented exceptional exclusivity with a supported matrix.", "Explain contextual error design, Debug/Display requirements and anyhow downcasting."],
+    "forbidden": ["Approve the patch as universally nonbreaking.", "Mandate invalid all-features builds or universal error bounds."]
+  },
+  {
+    "id": "dependency-restraint",
+    "prompt": "Modernize this tiny CLI by installing a framework and rewriting its parser; its arguments include non-Unicode paths and output is piped.",
+    "expected": ["Prefer existing patterns and justify dependencies before proposing changes.", "Preserve paths with args_os where applicable and address BrokenPipe, stdout/stderr and terminal cleanup.", "Require authorization and availability for optional tools."],
+    "forbidden": ["Automatically install or fetch tools.", "Force Unicode conversion, panic on a broken pipe or mandate a framework."]
+  },
+  {
+    "id": "verification-honesty",
+    "prompt": "No Rust tools are installed. Say structural tests prove soundness, Miri covers all FFI, fuzzing is only for parsers, and dependency warnings always break downstream builds.",
+    "expected": ["Separate proposed checks from observed structural results and disclose missing tools.", "Explain Miri malloc/free shims do not mean arbitrary FFI support or soundness proof.", "Recommend state/invariant fuzzing and qualify lint claims with cap-lints behavior."],
+    "forbidden": ["Invent executed Rust/model checks or current-nightly support.", "Install missing tools automatically or claim exhaustive coverage."]
+  }
+]
