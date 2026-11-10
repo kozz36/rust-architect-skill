@@ -53,9 +53,11 @@ seeing the rubric; a separate verifier judged its recorded answers:
 
 The core's output contract was clarified between probes. Composite rubric coverage
 is 12/12 across those observations, **not a single-run 12/12 on the final revision**
-or proof of general agent compliance. Executor: `general-purpose-sol`; underlying
-model ID was not captured. Independent judging used `gentle-ai-verify`.
-There are no compiled Rust examples or Rust compiler/runtime results here.
+or proof of general agent compliance. One coding agent produced the recorded
+answers, and a separate verifier assessed them. The underlying model identifier
+was not recorded. No particular agent platform or workflow is required to use
+this skill. There are no compiled Rust examples or Rust compiler/runtime results
+here.
 
 ## Verify the public artifact
 
@@ -72,9 +74,10 @@ LLM token count. A word-based body-size estimate is only a heuristic.
 
 ## Freshness and limits
 
-Research cut-off: **2026-11-10**, using agy Gemini and an independent Astra
-challenge. See `skills/rust-architect/references/sources.md` for primary locators,
-claim scopes and provenance limits. The observed official release 1.99.1
+Research cut-off: **2026-11-10**. Findings were checked against primary sources
+through independent research and cross-review. See
+`skills/rust-architect/references/sources.md` for primary locators, claim scopes
+and provenance limits. The observed official release 1.99.1
 (publication 2026-10-15) is a snapshot, not a mandate. Live docs can change.
 No unverified current-nightly support or exhaustive platform coverage is claimed.
 
