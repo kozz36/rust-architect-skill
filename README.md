@@ -11,9 +11,9 @@ contract plus situational guidance, not a framework or a Rust tutorial.
    into your agent's documented local skill directory.
 3. Confirm your agent discovers the frontmatter and can load the relative links.
 
-Do not copy only SKILL.md. There is no installer or remote installation command:
-this artifact is local and has not been published. Agent-specific discovery is
-not validated here; no global configuration changes are required by this repo.
+Do not copy only SKILL.md. No installer is bundled; use the manual installation
+steps above. Agent-specific discovery is not validated here; no global
+configuration changes are required by this repo.
 
 ## Choose the relevant context
 
